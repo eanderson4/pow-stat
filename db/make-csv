@@ -1,0 +1,7 @@
+#!/bin/bash
+
+hours=$(eval echo h{1..24} | sed -e "s/ /,/g" )
+sqlite3 power.db "select date,$hours from Market where name='MGE.MGE'" | sed -e 's/ //g' -e 's/|/\ /g' | minmax.py
+#sed is to remove whitespace due to mistake in python which is now fixed once database is reloaded
+
+

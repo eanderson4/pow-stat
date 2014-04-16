@@ -4,16 +4,19 @@ This set of python and bash scripts is used to put the miso data into a database
 To use (I'm using a recent linux mint distro)
 ==============================================
 
-Get sqlite3 if you dont have
+->Get sqlite3 if you dont have
 
-The miso data tarball can be found at: 
-->Extract in the main directory, which will create two folders, data which contains the newer files and miso which contains pre-2012 files
+->The miso data tarball can be found at: 
+https://drive.google.com/file/d/0B218a-tmzP5VOFJVaDBDdG5QNjA/edit?usp=sharing
 
-Run createdb and load scripts
+->Extract in the db directory, which will create two folders, data which contains the newer files and miso which contains pre-2012 files
+
+->Run createdb and load scripts
 
 Example:
 
 sudo apt-get install sqlite3
+cd db
 tar -xvzf data.tar.gz ./
 ./createdb.py
 ./load-miso;./load-miso2;
