@@ -1,0 +1,36 @@
+This set of python and bash scripts is used to put the miso data into a database.  When I started, I was just doing one year, and it now loads all the years for which I could find data.  I was initially using this to calculate bounds on the value of energy storage, but I'm sure there are a lot of interesting uses for this data, as Prof. Paul Wilson pointed out.  I'm using his example for a way to show what can be done and how to work with the database to make use of it.  I keep it simple and just use it to pull data and put into a csv file for charting purposes.  
+
+==============================================
+To use (I'm using a recent linux mint distro)
+==============================================
+
+Get sqlite3 if you dont have
+
+The miso data tarball can be found at: 
+->Extract in the main directory, which will create two folders, data which contains the newer files and miso which contains pre-2012 files
+
+Run createdb and load scripts
+
+Example:
+
+sudo apt-get install sqlite3
+tar -xvzf data.tar.gz ./
+./createdb.py
+./load-miso;./load-miso2;
+
+
+The other python files just give examples of how to interact with an sqlite database through python.  I normally use the commmand line version, 
+
+Example: 
+
+sqlite3 power.db "select * from Market where name='MGE.MGE'"
+#to get all the records for MGE.MGE
+
+sqlite3 power.db "select date,max from Stats where name='MGE.MGE'"
+#to get the max price for MGE.MGE for each day
+
+==============================================
+
+Contact:
+For help on getting this set up or feel free to let me know how you are using this
+eanderson4@wisc.edu

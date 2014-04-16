@@ -1,0 +1,13 @@
+#!/bin/bash
+
+for f in $( ls data )
+do
+    mv data/$f ./
+    unzip $f
+    file=$( ls *.csv )
+    filldb.py $file DA
+    mv $f data
+    rm *.csv
+done
+
+

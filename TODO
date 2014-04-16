@@ -1,0 +1,9 @@
+Todo:
+Work on statistics to make yearly calculations
+-Create new table with year to store each calculation
+-Scrape DB for info, make calculations, insert into new table
+
+
+Problems:
+filldb_single.py
+I noticed an error in year 2007 (2/11 maybe) in the data loading routine that needs to be looked into, so most likely missing at least one day of data for that year

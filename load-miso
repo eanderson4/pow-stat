@@ -1,0 +1,14 @@
+#!/bin/bash
+
+
+for month in $( ls miso )
+do
+    mv miso/$month ./
+    unzip $month
+    for file in $( ls *.csv )
+    do
+	filldb_single.py $file DA
+    done
+    mv $month miso
+    rm *.csv
+done
