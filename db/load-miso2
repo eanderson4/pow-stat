@@ -1,13 +1,15 @@
 #!/bin/bash
 
-for f in $( ls data )
+for time in DA RT
 do
-    mv data/$f ./
-    unzip $f
-    file=$( ls *.csv )
-    filldb.py $file DA
-    mv $f data
-    rm *.csv
+    for f in $( ls $time/data )
+    do
+	mv $time/data/$f ./
+	unzip $f
+	file=$( ls *.csv )
+	filldb.py $file $time
+	mv $f $time/data
+	rm *.csv
+    done
 done
-
 

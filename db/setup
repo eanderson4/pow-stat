@@ -1,0 +1,7 @@
+#!/bin/bash
+
+./createdb.py
+sleep 5
+./load-miso
+./load-miso2
+sqlite3 power.db "INSERT OR IGNORE INTO Names SELECT DISTINCT Name, Bus FROM Market"

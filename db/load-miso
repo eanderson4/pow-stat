@@ -1,14 +1,17 @@
 #!/bin/bash
 
 
-for month in $( ls miso )
+for time in DA RT
 do
-    mv miso/$month ./
-    unzip $month
-    for file in $( ls *.csv )
+    for month in $( ls $time/miso )
     do
-	filldb_single.py $file DA
+	mv $time/miso/$month ./
+	unzip $month
+	for file in $( ls *.csv )
+	do
+	    filldb_single.py $file $time
+	done
+	mv $month $time/miso
+	rm *.csv
     done
-    mv $month miso
-    rm *.csv
 done
