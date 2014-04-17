@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>MISO - Madison Gas and Electric</title>
+    <link rel="stylesheet" href="css/style.css" media="screen" type="text/css" />
+    
+    <script type="text/javascript"
+	    src="js/dygraph-combined.js"></script>
+  </head>
+  <body>
+    <div id="graphdiv"></div>
+    <script type="text/javascript">
+      g2 = new Dygraph(
+      document.getElementById("graphdiv"),
+      "data/mge-full.txt", // path to CSV file
+      {
+      title: 'Madison Gas and Electric Wholesale Electricity Price',
+      rollPeriod: 1,
+      showRoller: true,
+      customBars: true,
+      ylabel: 'Price ($/MW)',
+      showRangeSelector: true
+      }          // options
+      );
+    </script>
+  </body>
+</html>

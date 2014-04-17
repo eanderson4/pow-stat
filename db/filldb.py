@@ -32,8 +32,9 @@ class Data:
         self.prices=prices
 
 class Node:
-    def __init__(self,name,ty):
+    def __init__(self,name,bus,ty):
         self.name=name
+        self.bus=bus
         self.nodetype=ty
         self.dataLMP = { '0/0/0000':Data('none','0/0/0000',[0]) }
         self.dataMCC = { '0/0/0000':Data('none','0/0/0000',[0]) }
@@ -41,7 +42,8 @@ class Node:
 
     def addLMP(self,data):
 #        self.dataLMP[data.date] = data
-        string = "NULL, '"+str(self.name)+"', '"+dataframe+"', 'LMP',"
+        string = "NULL, '"+str(self.name)+"', '"+self.bus+"', '"+dataframe+"', 'LMP',"
+        string2 = "NULL, '"+str(self.name)+"', '"+dataframe+"', 'LMP',"
         ds = data.date.split('/')[2].rstrip() + '-' 
         year = data.date.split('/')[2].rstrip()
         if len(data.date.split('/')[0])>1:
@@ -60,6 +62,7 @@ class Node:
 #        print year,month,day,'-',ds
         string = string + " '"+ ds+"'" 
         stringstat = string
+        stringstat2 = string2+ " '"+ ds+"'" 
         for p in data.prices:
             string = string + ", "+str(p)
 #        print data.date, data.prices
@@ -111,8 +114,8 @@ class Node:
             s2 = t2/(n-1)
 
 #        print data.date, mn, mx, (mx-mn), ex, s2
-        stringstat = stringstat+", "+str(ex)+", "+str(s2)+", "+str(mn)+", "+str(mx)+", "+str(mx-mn)+", "+str(neg)
-        cur.execute("INSERT INTO Stats VALUES("+stringstat+")")
+        stringstat2 = stringstat2+", "+str(ex)+", "+str(s2)+", "+str(mn)+", "+str(mx)+", "+str(mx-mn)+", "+str(neg)
+        cur.execute("INSERT INTO Stats VALUES("+stringstat2+")")
 
     def addMCC(self,data):
         self.dataMCC[data.date] = data
@@ -122,7 +125,7 @@ class Node:
 
 f = open(filename,'r')
 
-n = Node('blank','none')
+n = Node('blank','none','none')
 nodelist = { n.name:n }
 
 for example in f:
@@ -131,10 +134,11 @@ for example in f:
 #    if date=='1/5/2013':
 #        break
     name=example.split(',')[1]
-    nodetype=example.split(',')[2]
+    bus=example.split(',')[2]
+    nodetype=example.split(',')[3]
 
     if name not in nodelist.keys():
-        nodelist[name] = Node(name,nodetype)
+        nodelist[name] = Node(name,bus,nodetype)
 #        print name,',',
 
     if 'LMP' in example and 'MCC' not in example and 'MLC' not in example:
