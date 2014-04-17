@@ -7,7 +7,8 @@ To use (I'm using a recent linux mint distro)
 ->Get sqlite3 if you dont have
 
 ->The miso data tarball can be found at: 
-https://drive.google.com/file/d/0B218a-tmzP5VOFJVaDBDdG5QNjA/edit?usp=sharing
+https://drive.google.com/file/d/0B218a-tmzP5VUkc1QnFtQVZvRU0/edit?usp=sharing
+(if this doesn't work, let me know)
 
 ->Extract in the db directory, which will create two folders, data which contains the newer files and miso which contains pre-2012 files
 

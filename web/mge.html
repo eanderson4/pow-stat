@@ -10,19 +10,92 @@
   </head>
   <body>
     <div id="graphdiv"></div>
+    <center>
+    <p><b>Show Series:</b></p>
+    <p>
+      <input type=checkbox id="0" checked onClick="change(this)">
+      <label for="0"> Day-Ahead</label></br>
+      <input type=checkbox id="1" onClick="change(this)">
+      <label for="1"> Real-Time</label></br>
+      <input type=checkbox id="2" checked onClick="change(this)">
+      <label for="2"> Residential</label>
+    </p>
+    <p><b>Rolling Averages:</b></p>
+    <a href="#" id="day" onClick="daily()">Daily</a>
+    <a href="#" id="week" onClick="weekly()">Weekly</a>
+    <a href="#" id="month" onClick="monthly()">Monthly</a>
+    <a href="#" id="year" onClick="yearly()">Yearly</a>
+    </center>
+
+    <h3>Interesting Features</h3>
+<ul>
+  <li>The period before the recession (2006 - mid 2008) has much higher volatility than the following period (mid 2008 - 2014)</li>
+  <ul>
+    <li>One possible explanation is a change in the generation portfolio.  The prices never recover after the recession, however (I have yet to check) the demand most likely recovers so the lower prices are most likely due to lower natural gas prices.  This lowers the cost of generators with ramping capability which makes peak times relatively less costly. </li>
+    <li>To investigate, need total demand data as well as generator mix data</li>
+  </ul>
+  <li>The first quarter of 2014 has large price spikes, which follow a period of relatively low volatility</li>
+  <ul>
+    <li>What happened? Long term generator outages?, shut down of plants? Long term line outages? </li>
+  </ul>
+  <li>Using the yearly rolling averages, it can be seen that the residential rates are consistently climbing while wholesale prices have fallen and stayed low over the same period</li>
+  <ul>
+    <li>Is there an explanation for this?  Renewable targets? Building new generators? Standard rate-increase tactics? </li>
+  </ul>
+</ul>
+  
+    <h3>Graph Explanation</h3>
+<p>
+    This graph displays the time-series prices for the day-ahead and real-time prices for Madison Gas & Electric.  These are the prices determined by an optimization routine done by the Midwest Independent System Operator (MISO) in order to determine a least cost supply of power to meet demand and maintain given reliability standards.  The day-ahead prices are determined, you got it, a day in advance.  The generators submit there bid offers and the demand is estimated using a forecasting procedure.  The <b>day-ahead problem</b> has two complicating elements and determines hourly prices for the following day.  First, MISO needs to determine which generators to have online throughout the next day.  Second, they need to ensure they are N-1 secure in order to meet requirements set by the Federal Energy Regulatory Commision (FERC).  N-1 secure means that the power grid is capable of withstanding any one power line or generator going down and not disrupting load.  They must also be able to move to an operating point in which no lines are overloaded within a given time frame.  Since the day-ahead problem is scheduled to forecast, the <b>real-time problem</b> must make up for errors in forecast as well as unforeseen events such as a power line or generator outage.  This is done on a 5 minute basis, that is, every 5 minutes the new supply offers are cleared with the realized real-time demand.
+</p>
+<p>
+Each day is represented by its average price for both the real-time and day-ahead prices.  The region between the maximum price and the minimum price for any day is shaded to represent the prices it took on any given day.
+</p>
+
+<h3>MISO Data</h3>
+<p>
+  If your interested in this data, surely check out the <a href="https://www.misoenergy.org/LMPContourMap/MISO_All.html">real time prices</a> provided by MISO.  They have loads of publically available data through their <a href="https://www.misoenergy.org">site</a>, just navigate to their market reports for data or have a look around to see how the power grid is operated.  If your interested to do research with this data, I have packaged all the LMP data and have some basic tools for working with it on <a href="https://github.com/eanderson4/miso-data">GitHub</a>.  Feel free to send questions my way or let me know of any related projects you may be working on!  
+</p>
+eanderson4 at wisc dot edu
+
+<h4>Future Investigation</h4>
+Have a particular node your interested in?  Let me know!  It is easy to run the numbers, but there are many to choose from.  
+<p><b>Up Next</b></p>
+<ul>
+  <li>Kewaunee - Nuclear plant which was recently shut down</li>
+</ul>
+
+    
     <script type="text/javascript">
       g2 = new Dygraph(
       document.getElementById("graphdiv"),
       "data/mge-full.txt", // path to CSV file
       {
       title: 'Madison Gas and Electric Wholesale Electricity Price',
-      rollPeriod: 1,
+      rollPeriod: 7,
       showRoller: true,
       customBars: true,
       ylabel: 'Price ($/MW)',
-      showRangeSelector: true
+      showRangeSelector: true,
+      visibility: [true, false, true]
       }          // options
       );
+      setStatus();
+      
+      function setStatus() {
+       document.getElementById("visibility").innerHTML = 
+        g2.visibility().toString();
+      }
+
+      function change(el) {
+       g2.setVisibility(parseInt(el.id), el.checked);;
+       setStatus();
+      }
+
+      function daily() { g2.updateOptions({rollPeriod: 1}); };
+      function weekly() { g2.updateOptions({rollPeriod: 7}); };
+      function monthly() { g2.updateOptions({rollPeriod: 30}); };
+      function yearly() { g2.updateOptions({rollPeriod: 365}); };
     </script>
   </body>
 </html>
