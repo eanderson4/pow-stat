@@ -22,13 +22,16 @@ with con:
 
     
     cur.execute("DROP TABLE IF EXISTS Market")
-    cur.execute("CREATE TABLE Market(Id INTEGER PRIMARY KEY, Name TEXT, Frame TEXT, Type TEXT, Date DATE"+hours+")")
+    cur.execute("CREATE TABLE Market(Id INTEGER PRIMARY KEY, Name TEXT, Bus TEXT, Frame TEXT, Type TEXT, Date DATE"+hours+")")
 
     cur.execute("DROP TABLE IF EXISTS Stats")
     cur.execute("CREATE TABLE Stats(Id INTEGER PRIMARY KEY, Name TEXT, Frame TEXT, Type TEXT, Date Date, Expect REAL, Var REAL, Min REAL, Max REAL, Dif REAL, Neg REAL)")
 
     cur.execute("DROP TABLE IF EXISTS Pricedata")
     cur.execute("CREATE TABLE Pricedata(Date DATE, Name TEXT, Year INTEGER, Day INTEGER, Hour INTEGER, Price REAL)")
+
+    cur.execute("DROP TABLE IF EXISTS Names")
+    cur.execute("CREATE TABLE Names(Name TEXT PRIMARY KEY, Type REAL)")
 
     cur.execute("SELECT * FROM Market")
     rows = cur.fetchall()
