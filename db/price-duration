@@ -1,0 +1,32 @@
+#!/bin/bash
+
+hours=$(eval echo h{1..24..1} | sed "s/\ /,/g")
+
+echo "hour" > temp
+for n in {1..8784}
+do
+    echo $n >> temp
+done
+
+for y in 2006 2007 2008 2009 2010 2011 2012 2013
+do
+    echo ",$y" > temp_$y
+    sqlite3 power.db "select $hours from Market where name='WPS.KEWAUKEWA' and frame='DA' and date like '$y%'" | sed "s/|/\n/g" | sort -nr | sed "s/^/,/" >> temp_$y
+    if [ $y != 2007 ]  # Related to leap year 2008, 2012 doesnt count because missing a day of data from that year
+    then
+	for i in {1..24..1}
+	do
+	    if [ $y == 2009 ];	    then
+		echo ",," >> temp_$y
+	    elif [ $y == 2008 ];	   then
+		a=1
+	    else
+		echo "," >> temp_$y
+	    fi	
+	done
+    fi	
+done
+files=$(eval echo temp_{2006..2013..1})
+paste temp $files | sed "s/\t//g"      
+
+rm temp $files 
